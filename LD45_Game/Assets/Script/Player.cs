@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class Player : MonoBehaviour
     {
         //Debug.Log(transform.position);
         Vector3 t = transform.position;
+
+        if(t.y < -5){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         if (t.x > -10 && t.x < 10 && t.y > -5 && t.y < 5)
         {
             Vector3 v = Camera.main.WorldToScreenPoint(t);
@@ -59,6 +65,22 @@ public class Player : MonoBehaviour
             }
 
             transform.Translate(speed);
+        }
+        else
+        {
+            //dead
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        GameObject home = GameObject.FindGameObjectWithTag("Finish");
+        if (home != null)
+        {
+            if (GetComponent<SpriteRenderer>().bounds.Intersects(
+                home.GetComponent<SpriteRenderer>().bounds
+            ))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 }
